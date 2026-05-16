@@ -6,118 +6,212 @@
     <title>I'm Sorry, Pakhi 🐼💖</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        html { scroll-behavior: smooth; }
-        .snap-container { scroll-snap-type: y mandatory; overflow-y: scroll; height: 100vh; }
-        .snap-start { scroll-snap-align: start; }
+        /* হার্ট অ্যানিমেশনের CSS */
+        @keyframes fall {
+            0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+        .heart {
+            position: absolute;
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+        /* পেজ পরিবর্তনের স্মুথ ট্রানজিশন */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .page.active {
+            display: flex;
+            opacity: 1;
+        }
+        /* নো বাটনের স্মুথ মুভমেন্ট */
+        #no-btn {
+            transition: all 0.2s ease;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-b from-[#0f172a] via-[#1e1b4b] to-[#0f172a] text-white">
+<body class="bg-gradient-to-b from-[#0f172a] via-[#1e1b4b] to-[#0f172a] text-white h-screen overflow-hidden flex items-center justify-center relative">
 
-<div class="snap-container relative">
-
+    <!-- ব্যাকগ্রাউন্ড হার্ট কন্টেইনার -->
     <div id="hearts-container" class="absolute inset-0 pointer-events-none z-0 overflow-hidden"></div>
 
-    <section class="snap-start min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-        <div class="relative z-10 max-w-3xl bg-white/10 backdrop-blur-2xl p-12 rounded-[40px] border border-white/20 shadow-[0_0_100px_rgba(255,255,255,0.15)]">
+    <!-- পেজ ১: এন্ট্রি পেজ -->
+    <section id="page-1" class="page active w-full max-w-3xl flex-col items-center justify-center text-center px-6 relative z-10">
+        <div class="bg-white/10 backdrop-blur-2xl p-10 md:p-12 rounded-[40px] border border-white/20 shadow-[0_0_100px_rgba(255,255,255,0.15)] w-full">
             <h1 class="text-5xl md:text-7xl font-bold bg-gradient-to-r from-pink-400 via-purple-300 to-pink-200 bg-clip-text text-transparent animate-pulse leading-tight">
                 Only Pakhi Can Enter 🐼💖
             </h1>
             <p class="mt-8 text-xl md:text-2xl text-gray-200 leading-loose">
                 This little world was made only for you... with love, regret, and hope.
             </p>
-            <button onclick="nextSlide()" class="mt-10 px-10 py-5 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-xl font-semibold shadow-2xl hover:scale-105 transition duration-500">
+            <button onclick="goToPage(2)" class="mt-10 px-10 py-5 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-xl font-semibold shadow-2xl hover:scale-105 transition duration-500 cursor-pointer">
                 Enter, My Panda 🐼
             </button>
         </div>
     </section>
 
-    <section class="snap-start min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-black/10">
-        <div class="relative z-10 max-w-4xl bg-white/10 backdrop-blur-2xl p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20">
-            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight animate-pulse">
-                I’m Sorry, Pakhi 🐼💖
+    <!-- পেজ ২: ভুল স্বীকার ও অনুশোচনা -->
+    <section id="page-2" class="page w-full max-w-4xl flex-col items-center justify-center text-center px-6 relative z-10">
+        <div class="bg-white/10 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20 w-full">
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight">
+                I'm Honestly So Sorry, Pakhi... 🥺
             </h1>
-            <p class="text-xl md:text-2xl leading-loose text-gray-100 max-w-3xl mx-auto">
-                My little panda... I know I hurt you. I was stubborn, careless, and I made you worried. I truly regret everything.
+            <p class="text-lg md:text-xl leading-loose text-gray-200 max-w-3xl mx-auto mb-8 text-justify md:text-center">
+                আমি জানি আমার কিছু আচরণ, আমার কিছু জেদ তোমাকে কতটা কষ্ট দিয়েছে। তুমি সবসময় আমার ভালো চেয়েছ, আমার খেয়াল রেখেছ, আর আমি উল্টো তোমাকে দুশ্চিন্তায় ফেলেছি। নিজের ভুলগুলো যখন বুঝতে পেরেছি, আমার নিজের ওপরই রাগ হচ্ছিল। আমার প্রতিটি ভুলের জন্য, তোমাকে দেওয়া প্রতিটি কষ্টের জন্য আমি মন থেকে ক্ষমাপ্রার্থী। প্লিজ আমার ওপর এভাবে রাগ করে থেকো না...
             </p>
+            <button onclick="goToPage(3)" class="px-8 py-4 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-lg font-medium transition duration-300 cursor-pointer shadow-lg">
+                Next 💖
+            </button>
         </div>
-        <div class="absolute bottom-6 text-pink-500 animate-bounce text-lg z-10">✨ Scroll Through Our Story ✨</div>
     </section>
 
-    <section class="snap-start min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-black/10">
-        <div class="relative z-10 max-w-4xl bg-white/10 backdrop-blur-2xl p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20">
-            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight animate-pulse">
-                I Know I Was Wrong 🥺
+    <!-- পেজ ৩: সে আপনার কাছে কতটা স্পেশাল -->
+    <section id="page-3" class="page w-full max-w-4xl flex-col items-center justify-center text-center px-6 relative z-10">
+        <div class="bg-white/10 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20 w-full">
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight">
+                You Are Beyond Special To Me 💖
             </h1>
-            <p class="text-xl md:text-2xl leading-loose text-gray-100 max-w-3xl mx-auto mb-8">
-                I know I made mistakes. I was stubborn and careless even after you warned me. You cared for me deeply, and instead of understanding your worries, I hurt you. I truly regret it.
+            <p class="text-lg md:text-xl leading-loose text-gray-200 max-w-3xl mx-auto mb-8 text-justify md:text-center">
+                সত্যি বলতে পাখি, এই পুরো পৃথিবীতে তুমি আমার কাছে কতটা স্পেশাল একজন মানুষ, তা হয়তো আমি মুখে কোনোদিনও বুঝিয়ে বলতে পারব না। তোমার ওই মিষ্টি হাসিটা আমার দিন ভালো করে দেওয়ার জন্য যথেষ্ট। আমি সবসময়, সত্যি সবসময় মন থেকে চাই—তুমি যেন সারাজীবন এমন হাসি-خুশি থাকো। তোমার চোখে জল বা কপালে দুশ্চিন্তার ভাঁজ আমি আর কখনোই দেখতে চাই না।
             </p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200&auto=format&fit=crop" class="rounded-3xl shadow-2xl h-32 w-full object-cover hover:scale-105 transition duration-700">
-                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop" class="rounded-3xl shadow-2xl h-32 w-full object-cover hover:scale-105 transition duration-700">
-                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1200&auto=format&fit=crop" class="rounded-3xl shadow-2xl h-32 w-full object-cover hover:scale-105 transition duration-700">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&auto=format&fit=crop" class="rounded-3xl shadow-2xl h-32 w-full object-cover hover:scale-105 transition duration-700">
+            <button onclick="goToPage(4)" class="px-8 py-4 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-lg font-medium transition duration-300 cursor-pointer shadow-lg">
+                See Our Memories 📸
+            </button>
+        </div>
+    </section>
+
+    <!-- পেজ ৪: আমাদের ছবি/ভিডিও -->
+    <section id="page-4" class="page w-full max-w-4xl flex-col items-center justify-center text-center px-6 relative z-10">
+        <div class="bg-white/10 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20 w-full">
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-6 leading-tight">
+                Because Every Memory With You is a Blessing... 📸
+            </h1>
+            <p class="text-lg md:text-xl leading-loose text-gray-200 max-w-3xl mx-auto mb-6">
+                রাগ করার আগে আমাদের এই সুন্দর মুহূর্তগুলোর দিকে একবার তাকাও। এই স্মৃতিগুলোই আমার ভালো থাকার শক্তি।
+            </p>
+            
+            <div class="w-full max-w-xl mx-auto shadow-2xl mb-8 flex justify-center">
+                <iframe src="https://drive.google.com/file/d/1qEghpc3N2Mn6WEroNSwgohQEIeBvTe1Q/preview" class="w-full h-[250px] md:h-[350px] rounded-[24px] border-4 border-white/20" allow="autoplay"></iframe>
             </div>
+
+            <button onclick="goToPage(5)" class="px-8 py-4 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-lg font-medium transition duration-300 cursor-pointer shadow-lg">
+                Listen To Our Song 🎶
+            </button>
         </div>
     </section>
 
-    <section class="snap-start min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-black/10">
-        <div class="relative z-10 max-w-4xl bg-white/10 backdrop-blur-2xl p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20">
-            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight animate-pulse">
-                Our Memory 📸
-            </h1>
-            <p class="text-xl md:text-2xl leading-loose text-gray-100 max-w-3xl mx-auto mb-6">
-                Every moment with you is special to me.
-            </p>
-            <div class="flex justify-center">
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop" alt="memory" class="w-[280px] md:w-[400px] rounded-[30px] shadow-[0_0_50px_rgba(255,192,203,0.7)] border-4 border-white hover:scale-105 transition duration-700">
-            </div>
-        </div>
-    </section>
-
-    <section class="snap-start min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-black/10">
-        <div class="relative z-10 max-w-4xl bg-white/10 backdrop-blur-2xl p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20">
-            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight animate-pulse">
+    <!-- পেজ ৫: আমাদের গান (৪৪ সেকেন্ডে শুরু হওয়ার টাইমকোড সহ) -->
+    <section id="page-5" class="page w-full max-w-4xl flex-col items-center justify-center text-center px-6 relative z-10">
+        <div class="bg-white/10 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20 w-full">
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-6 leading-tight">
                 Our Song 🎶
             </h1>
-            <p class="text-xl md:text-2xl leading-loose text-gray-100 max-w-3xl mx-auto mb-6">
-                Bura na mano baat ka... ❤️
+            <p class="text-lg md:text-xl leading-loose text-gray-200 max-w-3xl mx-auto mb-6">
+                এই গানটা শুনলেই শুধু তোমার কথা মনে পড়ে... ❤️
             </p>
-            <div class="w-full max-w-2xl mx-auto shadow-2xl">
-                <iframe class="w-full h-[200px] md:h-[315px] rounded-[30px]" src="https://www.youtube.com/embed/prYPG-05udg?start=44" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            
+            <!-- src লিংকের শেষে start=44 যোগ করা হয়েছে -->
+            <div class="w-full max-w-xl mx-auto shadow-2xl mb-8">
+                <iframe id="youtube-song" class="w-full h-[200px] md:h-[280px] rounded-[24px]" 
+                        src="https://www.youtube.com/embed/prYPG-05udg?enablejsapi=1&start=44" 
+                        title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            </div>
+
+            <button onclick="goToPage(6)" class="px-8 py-4 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-lg font-medium transition duration-300 cursor-pointer shadow-lg">
+                The Final Question 🥺
+            </button>
+        </div>
+    </section>
+
+    <!-- পেজ ৬: ফাইনাল কোয়েশ্চেন এবং পালানো বাটন ট্রিক -->
+    <section id="page-6" class="page w-full max-w-4xl flex-col items-center justify-center text-center px-6 relative z-10">
+        <div id="question-box" class="bg-white/10 backdrop-blur-2xl p-10 md:p-12 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20 w-full relative min-h-[300px] flex flex-col justify-center items-center">
+            
+            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-pink-300 bg-clip-text text-transparent mb-8 leading-tight">
+                Have you forgiven me? 🥺👉👈
+            </h1>
+            
+            <p class="text-lg text-gray-300 mb-10">I promise to be better for you every single day. 🐼</p>
+            
+            <div class="flex flex-row gap-6 relative w-full justify-center items-center h-20">
+                <button onclick="forgivenSuccess()" class="px-10 py-4 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-xl font-bold shadow-lg hover:scale-110 transition duration-300 cursor-pointer z-20">
+                    Yes  
+                </button>
+                <button id="no-btn" onmouseover="moveNoButton()" onclick="forgivenSuccess()" ontouchstart="moveNoButton()" class="absolute px-10 py-4 rounded-full bg-rose-500 text-white text-xl font-bold shadow-lg z-20">
+                    No
+                </button>
             </div>
         </div>
-    </section>
 
-    <section class="snap-start min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-black/10">
-        <div class="relative z-10 max-w-4xl bg-white/10 backdrop-blur-2xl p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20">
-            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight animate-pulse">
-                My Promise To You 🌸
-            </h1>
-            <p class="text-xl md:text-2xl leading-loose text-gray-100 max-w-3xl mx-auto">
-                I promise I will never repeat these mistakes again. I will listen to you properly, care about your feelings, and never make you this worried again.
+        <!-- সাকসেস মেসেজ -->
+        <div id="success-box" class="hidden bg-white/10 backdrop-blur-2xl p-10 md:p-12 rounded-[40px] shadow-[0_0_100px_rgba(52,211,153,0.3)] border border-emerald-500/30 w-full text-center animate-bounce">
+            <h1 class="text-5xl md:text-7xl mb-6">Yayyy! 🎉🐼❤️</h1>
+            <h2 class="text-3xl md:text-5xl font-bold text-emerald-400 mb-6">Thank You, My Panda!</h2>
+            <p class="text-xl text-gray-200 leading-loose">
+                আই লাভ ইউ পাখি! আমি জানতাম তুমি তোমার এই বোকা ছেলেটাকে বেশিক্ষণ ভালো না বেসে থাকতে পারবে না। আই প্রমিজ, আর কখনো তোমাকে কষ্ট দেবো না! 💖🌸
             </p>
         </div>
     </section>
 
-    <section class="snap-start min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-black/10">
-        <div class="relative z-10 max-w-4xl bg-white/10 backdrop-blur-2xl p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20">
-            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight animate-pulse">
-                Why You Are So Special 💖
-            </h1>
-            <p class="text-xl md:text-2xl leading-loose text-gray-100 max-w-3xl mx-auto">
-                Because you stayed, cared, worried, loved, and understood me even when I was difficult. Your love feels like peace to me, Pakhi.
-            </p>
-        </div>
-    </section>
+<script>
+    function goToPage(pageNumber) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => page.classList.remove('active'));
+        
+        const nextPage = document.getElementById(page-${pageNumber});
+        if(nextPage) {
+            nextPage.classList.add('active');
+        }
 
-    <section class="snap-start min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-black/10">
-        <div class="relative z-10 max-w-4xl bg-white/10 backdrop-blur-2xl p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20">
-            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 leading-tight animate-pulse">
-                Will You Forgive Me? 🐼💖
-            </h1>
-            <p class="text-xl md:text-2xl leading-loose text-gray-100 max-w-3xl mx-auto">
-                I know sorry cannot fix everything instantly, but I truly want to become better for you. Please give this stupid boy one more chance.
-            </p>
-        </div>
-    </section>
+        if(pageNumber === 1) {
+            const iframe = document.getElementById('youtube-song');
+            const src = iframe.src;
+            iframe.src = src;
+        }
+    }
+
+    function moveNoButton() {
+        const noBtn = document.getElementById('no-btn');
+        const box = document.getElementById('question-box');
+        
+        const padding = 50;
+        const maxX = box.clientWidth - noBtn.clientWidth - padding;
+        const maxY = box.clientHeight - noBtn.clientHeight - padding;
+        
+        const randomX = Math.floor(Math.random() * (maxX - padding)) + padding/2 - (box.clientWidth/4);
+        const randomY = Math.floor(Math.random() * (maxY - padding)) + padding/2 - (box.clientHeight/4);
+        
+        noBtn.style.left = randomX + 'px';
+        noBtn.style.top = randomY + 'px';
+    }
+
+    function forgivenSuccess() {
+        document.getElementById('question-box').classList.add('hidden');
+        document.getElementById('success-box').classList.remove('hidden');
+        setInterval(createHeart, 100);
+    }
+
+    function createHeart() {
+        const container = document.getElementById('hearts-container');
+        const heart = document.createElement('div');
+        const emojis = ['💖', '❤️', '🌸', '🐼', '💕'];
+        
+        heart.classList.add('heart');
+        heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 3 + 3 + 's'; 
+        heart.style.fontSize = Math.random() * 15 + 15 + 'px'; 
+        
+        container.appendChild(heart);
+        
+        setTimeout(() => { heart.remove(); }, 6000);
+    }
+    setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>
