@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I'm Sorry, Pakhi 🐼💖</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ব্যাকগ্রাউন্ড হার্ট অ্যানিমেশন */
+        /* মেইন ব্যাকগ্রাউন্ড ও বডি স্টাইল */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0f172a, #1e1b4b, #0f172a);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* হার্ট অ্যানিমেশন */
         @keyframes fall {
             0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
@@ -17,118 +30,251 @@
             pointer-events: none;
             z-index: 1;
         }
-
-        /* পেজ ট্রানজিশন ইফেক্ট */
-        .page {
-            display: none; /* শুরুতে সব পেজ লুকানো থাকবে */
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            width: 100%;
+        #hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
             height: 100vh;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .page.active {
-            display: flex; /* শুধু active ক্লাস থাকলে পেজ দেখা যাবে */
-            opacity: 1;
-        }
-
-        /* নো বাটনের মুভমেন্ট */
-        #no-btn {
-            transition: all 0.2s ease;
-            position: absolute;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
+            pointer-events: none;
             overflow: hidden;
-            background: linear-gradient(to bottom, #0f172a, #1e1b4b, #0f172a);
+        }
+
+        /* পেজ ম্যানেজমেন্ট - এবার আর কোনো ক্ল্যাশ হবে না */
+        .page {
+            display: none; /* শুরুতে সব পেজ একদম বন্ধ */
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            z-index: 10;
+        }
+        /* জাভাস্ক্রিপ্ট কল করলে শুধু এই ক্লাসটি অন হবে */
+        .page.active {
+            display: block !important; 
+        }
+
+        /* সুন্দর কাঁচের মতো গ্লাস ইফেক্ট বক্স */
+        .box {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.05);
+        }
+
+        /* হেডিং ও টেক্সট কালার গ্রাডিয়েন্ট */
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #f472b6;
+            line-height: 1.2;
+        }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #e2e8f0;
+            margin-bottom: 30px;
+        }
+
+        /* গ্লোয়িং বোতাম বাটন */
+        .btn {
+            background-color: #ec4899;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
+        }
+        .btn:hover {
+            background-color: #db2777;
+            transform: scale(1.05);
+        }
+
+        /* মিডিয়া কন্টেইনার */
+        .media-box {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        iframe {
+            width: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* ফাইনাল পেজের বাটন এরিয়া */
+        .btn-container {
+            position: relative;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        #no-btn {
+            position: absolute;
+            background-color: #f43f5e;
+            box-shadow: 0 10px 20px rgba(244, 63, 94, 0.3);
+            transition: all 0.15s ease;
+        }
+        .btn-yes {
+            background-color: #10b981;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+        .btn-yes:hover {
+            background-color: #059669;
+        }
+
+        /* সাকসেস বক্স */
+        #success-box {
+            display: none;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.1);
+        }
+        #success-box h1 { color: #34d399; }
+
+        /* মোবাইল স্ক্রিনের জন্য ফিক্স */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            p { font-size: 1rem; }
+            .box { padding: 25px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="hearts-container" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+    <div id="hearts-container"></div>
 
-    <section id="page-1" class="page active px-6">
-        <div class="bg-white/10 backdrop-blur-2xl p-10 md:p-12 rounded-[40px] border border-white/20 shadow-[0_0_100px_rgba(255,255,255,0.15)] max-w-3xl w-full z-10">
-            <h1 class="text-5xl md:text-7xl font-bold bg-gradient-to-r from-pink-400 via-purple-300 to-pink-200 bg-clip-text text-transparent animate-pulse leading-tight">
-                Only Pakhi Can Enter 🐼💖
-            </h1>
-            <p class="mt-8 text-xl text-gray-200 leading-loose">
-                This little world was made only for you... with love, regret, and hope.
-            </p>
-            <button onclick="nextPage(2)" class="mt-10 px-10 py-5 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-2xl font-bold shadow-2xl hover:scale-105 transition duration-500 cursor-pointer">
-                Enter, My Pakhi 🐼💖
-            </button>
+    <section id="page-1" class="page active">
+        <div class="box">
+            <h1 style="color: #f472b6;">Only Pakhi Can Enter 🐼💖</h1>
+            <p>This little world was made only for you... with love, regret, and hope.</p>
+            <button onclick="nextPage(2)" class="btn">Enter, My Pakhi 🐼💖</button>
         </div>
     </section>
 
-    <section id="page-2" class="page px-6">
-        <div class="bg-white/10 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20 max-w-4xl w-full z-10">
-            <h1 class="text-4xl md:text-5xl font-bold text-pink-400 mb-8">I'm Honestly So Sorry, Pakhi... 🥺</h1>
-            <p class="text-lg md:text-xl text-gray-200 leading-relaxed mb-8">
-                আমি জানি আমার কিছু আচরণ তোমাকে কতটা কষ্ট দিয়েছে। তুমি সবসময় আমার ভালো চেয়েছ, আর আমি উল্টো তোমাকে দুশ্চিন্তায় ফেলেছি। প্লিজ আমার ওপর এভাবে রাগ করে থেকো না।
-            </p>
-            <button onclick="nextPage(3)" class="px-8 py-4 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-lg font-bold shadow-lg">Next 💖</button>
+    <section id="page-2" class="page">
+        <div class="box">
+            <h1>I'm Honestly So Sorry, Pakhi... 🥺</h1>
+            <p>আমি জানি আমার কিছু আচরণ তোমাকে কতটা কষ্ট দিয়েছে। তুমি সবসময় আমার ভালো চেয়েছ, আর আমি উল্টো তোমাকে দুশ্চিন্তায় ফেলেছি। প্লিজ আমার ওপর এভাবে রাগ করে থেকো না।</p>
+            <button onclick="nextPage(3)" class="btn">Next 💖</button>
         </div>
     </section>
 
-    <section id="page-3" class="page px-6">
-        <div class="bg-white/10 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] shadow-[0_0_100px_rgba(255,255,255,0.15)] border border-white/20 max-w-4xl w-full z-10">
-            <h1 class="text-4xl md:text-5xl font-bold text-purple-400 mb-8">You Are My World 💖</h1>
-            <p class="text-lg md:text-xl text-gray-200 mb-8">
-                তুমি আমার জীবনে কতটা স্পেশাল তা মুখে বলে বোঝানো সম্ভব না। আমি সবসময় চাই তুমি হাসিখুশি থাকো। তোমার চোখে জল আমি সইতে পারি না।
-            </p>
-            <button onclick="nextPage(4)" class="px-8 py-4 rounded-full bg-purple-500 hover:bg-purple-600 text-white text-lg font-bold shadow-lg">See Our Memory 📸</button>
+    <section id="page-3" class="page">
+        <div class="box">
+            <h1 style="color: #c084fc;">You Are My World 💖</h1>
+            <p>তুমি আমার জীবনে কতটা স্পেশাল তা মুখে বলে বোঝানো সম্ভব না। আমি সবসময় চাই তুমি হাসিখুশি থাকো। তোমার চোখে জল আমি সইতে পারি না।</p>
+            <button onclick="nextPage(4)" class="btn">See Our Memory 📸</button>
         </div>
     </section>
 
-    <section id="page-4" class="page px-6">
-        <div class="bg-white/10 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] border border-white/20 max-w-4xl w-full z-10">
-            <h2 class="text-3xl md:text-4xl font-bold text-pink-300 mb-6">Our Beautiful Memory 📸</h2>
-            <div class="w-full max-w-xl mx-auto shadow-2xl mb-8 flex justify-center">
-                <iframe src="https://drive.google.com/file/d/1qEghpc3N2Mn6WEroNSwgohQEIeBvTe1Q/preview" class="w-full h-[250px] md:h-[350px] rounded-[24px] border-4 border-white/20" allow="autoplay"></iframe>
+    <section id="page-4" class="page">
+        <div class="box">
+            <h1 style="color: #67e8f9;">Our Beautiful Memory 📸</h1>
+            <div class="media-box">
+                <iframe src="https://drive.google.com/file/d/1qEghpc3N2Mn6WEroNSwgohQEIeBvTe1Q/preview" height="300" allow="autoplay"></iframe>
             </div>
-            <button onclick="nextPage(5)" class="px-8 py-4 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-lg font-bold">Listen To Our Song 🎶</button>
+            <button onclick="nextPage(5)" class="btn">Listen To Our Song 🎶</button>
         </div>
     </section>
 
-    <section id="page-5" class="page px-6">
-        <div class="bg-white/10 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] border border-white/20 max-w-4xl w-full z-10">
-            <h1 class="text-4xl md:text-5xl font-bold text-pink-400 mb-6">Our Song 🎶</h1>
-            <p class="text-lg text-gray-200 mb-6">এই গানটা শুনলেই শুধু তোমার কথা মনে পড়ে... ❤️</p>
-            <div class="w-full max-w-xl mx-auto shadow-2xl mb-8">
-                <iframe id="youtube-song" class="w-full h-[200px] md:h-[280px] rounded-[24px]" 
-                        src="https://www.youtube.com/embed/prYPG-05udg?enablejsapi=1&start=44" 
-                        title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-                </iframe>
+    <section id="page-5" class="page">
+        <div class="box">
+            <h1>Our Song 🎶</h1>
+            <p>এই গানটা শুনলেই শুধু তোমার কথা মনে পড়ে... ❤️</p>
+            <div class="media-box">
+                <iframe id="youtube-song" height="250" src="https://www.youtube.com/embed/prYPG-05udg?enablejsapi=1&start=44" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <button onclick="nextPage(6)" class="px-8 py-4 rounded-full bg-pink-500 text-white text-lg font-bold">The Final Question 🥺</button>
+            <button onclick="nextPage(6)" class="btn">The Final Question 🥺</button>
         </div>
     </section>
 
-    <section id="page-6" class="page px-6">
-        <div id="question-box" class="bg-white/10 backdrop-blur-2xl p-10 md:p-12 rounded-[40px] border border-white/20 max-w-3xl w-full z-10 relative flex flex-col items-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-pink-400 mb-8 leading-tight">Have you forgiven me? 🥺👉👈</h1>
-            <p class="text-lg text-gray-300 mb-12 italic">I promise to be better for you every single day. 🐼</p>
+    <section id="page-6" class="page">
+        <div id="question-box" class="box">
+            <h1>Have you forgiven me? 🥺👉👈</h1>
+            <p style="font-style: italic; color: #94a3b8;">I promise to be better for you every single day. 🐼</p>
             
-            <div class="flex flex-row gap-12 justify-center items-center h-20 w-full relative">
-                <button onclick="forgivenSuccess()" class="px-12 py-4 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-2xl font-bold shadow-lg z-20 transition hover:scale-110">
-                    Yes  
-                </button>
-                <button id="no-btn" onmouseover="moveNoButton()" onclick="forgivenSuccess()" ontouchstart="moveNoButton()" class="px-10 py-4 rounded-full bg-rose-500 text-white text-xl font-bold shadow-lg z-20">
-                    No
-                </button>
+            <div class="btn-container">
+                <button onclick="forgivenSuccess()" class="btn btn-yes">Yes</button>
+                <button id="no-btn" onmouseover="moveNoButton()" onclick="forgivenSuccess()" ontouchstart="moveNoButton()" class="btn">No</button>
             </div>
         </div>
 
-        <div id="success-box" class="hidden bg-white/10 backdrop-blur-2xl p-10 md:p-12 rounded-[40px] border border-emerald-500/30 max-w-3xl w-full text-center animate-bounce z-10">
-            <h1 class="text-5xl md:text-7xl mb-6">Yayyy! 🎉🐼❤️</h1>
-            <h2 class="text-3xl font-bold text-emerald-400 mb-6">Thank You, My Pakhi!</h2>
-            <p class="text-xl text-gray-200 leading-loose">আই লাভ ইউ পাখি! আমি জানতাম তুমি এই বোকা ছেলেটাকে মাফ না করে থাকতে পারবে না। আই প্রমিজ, আর কখনোই তোমাকে কষ্ট দেবো না! 💖🌸</p>
+        <div id="success-box" class="box">
+            <h1>Yayyy! 🎉🐼❤️</h1>
+            <h2>Thank You, My Pakhi!</h2>
+            <p>আই লাভ ইউ পাখি! আমি জানতাম তুমি এই বোকা ছেলেটাকে মাফ না করে থাকতে পারবে না। আই প্রমিজ, আর conserve তোমাকে কষ্ট দেবো না! 💖🌸</p>
         </div>
     </section>
+
+    <script>
+        function nextPage(num) {
+            // ১. সব পেজকে লুপ চালিয়ে একদম হাইড করে দেওয়া
+            var allPages = document.querySelectorAll('.page');
+            for (var i = 0; i < allPages.length; i++) {
+                allPages[i].style.setProperty('display', 'none', 'important');
+            }
+            
+            // ২. টার্গেট পেজটিকে ডিসপ্লে ব্লক করে দেওয়া
+            var target = document.getElementById('page-' + num);
+            if (target) {
+                target.style.setProperty('display', 'block', 'important');
+            }
+        }
+
+        // নো বাটন মুভ করার ফিক্সড লজিক (বক্সের ভেতরেই থাকবে যাতে স্ক্রিনের বাইরে না পালায়)
+        function moveNoButton() {
+            const btn = document.getElementById('no-btn');
+            const container = btn.parentElement;
+            
+            // কন্টেইনারের সাইজ অনুযায়ী বাটন ছিটকে যাবে
+            const maxX = container.clientWidth - btn.clientWidth;
+            const maxY = 150; // লিমিটেড ভার্টিকাল মুভমেন্ট
+            
+            const x = Math.floor(Math.random() * maxX) - (maxX / 2);
+            const y = Math.floor(Math.random() * maxY) - (maxY / 2);
+            
+            btn.style.transform = translate(${x}px, ${y}px);
+        }
+
+        // সফল হলে মেসেজ দেখানো
+        function forgivenSuccess() {
+            document.getElementById('question-box').style.setProperty('display', 'none', 'important');
+            document.getElementById('success-box').style.setProperty('display', 'block', 'important');
+            setInterval(createHeart, 80); // সাকসেস স্ক্রিনে প্রচুর লাভ উড়বে
+        }
+
+        // লাভ ইমোজি জেনারেটর
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            const emojis = ['💖', '❤️', '🌸', '🐼', '💕'];
+            heart.classList.add('heart');
+            heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            heart.style.fontSize = Math.random() * 15 + 20 + 'px';
+            container.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+
+        // ব্যাকগ্রাউন্ড লাভ মেকার সবসময় চলতে থাকবে
+        setInterval(createHeart, 250);
+    </script>
+
+</body>
+</html>
