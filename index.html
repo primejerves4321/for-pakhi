@@ -40,9 +40,9 @@
             overflow: hidden;
         }
 
-        /* পেজ ম্যানেজমেন্ট - এবার আর কোনো ক্ল্যাশ হবে না */
+        /* পেজ ম্যানেজমেন্ট */
         .page {
-            display: none; /* শুরুতে সব পেজ একদম বন্ধ */
+            display: none; 
             width: 100%;
             max-width: 800px;
             padding: 20px;
@@ -50,9 +50,8 @@
             text-align: center;
             z-index: 10;
         }
-        /* জাভাস্ক্রিপ্ট কল করলে শুধু এই ক্লাসটি অন হবে */
         .page.active {
-            display: block !important; 
+            display: block; 
         }
 
         /* সুন্দর কাঁচের মতো গ্লাস ইফেক্ট বক্স */
@@ -117,7 +116,7 @@
         /* ফাইনাল পেজের বাটন এরিয়া */
         .btn-container {
             position: relative;
-            height: 80px;
+            height: 100px; /* Enhanced wrapper room for button escapes */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -128,11 +127,12 @@
             position: absolute;
             background-color: #f43f5e;
             box-shadow: 0 10px 20px rgba(244, 63, 94, 0.3);
-            transition: all 0.15s ease;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .btn-yes {
             background-color: #10b981;
             box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            z-index: 12;
         }
         .btn-yes:hover {
             background-color: #059669;
@@ -186,7 +186,7 @@
         <div class="box">
             <h1 style="color: #67e8f9;">Our Beautiful Memory 📸</h1>
             <div class="media-box">
-                <iframe src="https://drive.google.com/file/d/1qEghpc3N2Mn6WEroNSwgohQEIeBvTe1Q/preview" height="300" allow="autoplay"></iframe>
+                <iframe src="https://drive.google.com/file/d/1qEghpc3N2Mn6WEroNSwgohQEIeBvTe1Q/preview" height="300"></iframe>
             </div>
             <button onclick="nextPage(5)" class="btn">Listen To Our Song 🎶</button>
         </div>
@@ -210,52 +210,61 @@
             
             <div class="btn-container">
                 <button onclick="forgivenSuccess()" class="btn btn-yes">Yes</button>
-                <button id="no-btn" onmouseover="moveNoButton()" onclick="forgivenSuccess()" ontouchstart="moveNoButton()" class="btn">No</button>
+                <button id="no-btn" onmouseover="moveNoButton()" onclick="moveNoButton()" ontouchstart="moveNoButton()" class="btn">No</button>
             </div>
         </div>
 
         <div id="success-box" class="box">
             <h1>Yayyy! 🎉🐼❤️</h1>
             <h2>Thank You, My Pakhi!</h2>
-            <p>আই লাভ ইউ পাখি! আমি জানতাম তুমি এই বোকা ছেলেটাকে মাফ না করে থাকতে পারবে না। আই প্রমিজ, আর conserve তোমাকে কষ্ট দেবো না! 💖🌸</p>
+            <p>আই লাভ ইউ পাখি! আমি জানতাম তুমি এই বোকা ছেলেটাকে মাফ না করে থাকতে পারবে না। আই প্রমিজ, আর কখনো তোমাকে কষ্ট দেবো না! 💖🌸</p>
         </div>
     </section>
 
     <script>
         function nextPage(num) {
-            // ১. সব পেজকে লুপ চালিয়ে একদম হাইড করে দেওয়া
+            // সব পেজ থেকে একটিভ ক্লাস সরিয়ে ফেলা
             var allPages = document.querySelectorAll('.page');
             for (var i = 0; i < allPages.length; i++) {
-                allPages[i].style.setProperty('display', 'none', 'important');
+                allPages[i].classList.remove('active');
             }
             
-            // ২. টার্গেট পেজটিকে ডিসপ্লে ব্লক করে দেওয়া
+            // টার্গেট পেজে একটিভ ক্লাস দেওয়া
             var target = document.getElementById('page-' + num);
             if (target) {
-                target.style.setProperty('display', 'block', 'important');
+                target.classList.add('active');
+            }
+
+            // ফাইনাল পেজে গেলে গান থামানোর ব্যবস্থা (ভিডিওর সোর্স রিলোড করে)
+            if (num === 6) {
+                var iframe = document.getElementById('youtube-song');
+                if (iframe) {
+                    var src = iframe.src;
+                    iframe.src = src; 
+                }
             }
         }
 
-        // নো বাটন মুভ করার ফিক্সড লজিক (বক্সের ভেতরেই থাকবে যাতে স্ক্রিনের বাইরে না পালায়)
+        // নো বাটন মুভ করার ফিক্সড লজিক
         function moveNoButton() {
             const btn = document.getElementById('no-btn');
             const container = btn.parentElement;
             
-            // কন্টেইনারের সাইজ অনুযায়ী বাটন ছিটকে যাবে
-            const maxX = container.clientWidth - btn.clientWidth;
-            const maxY = 150; // লিমিটেড ভার্টিকাল মুভমেন্ট
+            const maxX = (container.clientWidth / 2) - (btn.clientWidth / 2);
+            const maxY = 60; // কন্টেইনার ওভারফ্লো আটকানোর জন্য লিমিটেড রেঞ্জ
             
-            const x = Math.floor(Math.random() * maxX) - (maxX / 2);
-            const y = Math.floor(Math.random() * maxY) - (maxY / 2);
+            // র্যান্ডম পজিশন জেনারেট করা
+            const x = Math.floor(Math.random() * (maxX * 2)) - maxX;
+            const y = Math.floor(Math.random() * (maxY * 2)) - maxY;
             
-            btn.style.transform = translate(${x}px, ${y}px);
+            btn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
         // সফল হলে মেসেজ দেখানো
         function forgivenSuccess() {
-            document.getElementById('question-box').style.setProperty('display', 'none', 'important');
-            document.getElementById('success-box').style.setProperty('display', 'block', 'important');
-            setInterval(createHeart, 80); // সাকসেস স্ক্রিনে প্রচুর লাভ উড়বে
+            document.getElementById('question-box').style.display = 'none';
+            document.getElementById('success-box').style.display = 'block';
+            setInterval(createHeart, 60); // সাকসেস স্ক্রিনে প্রচুর লাভ উড়বে
         }
 
         // লাভ ইমোজি জেনারেটর
